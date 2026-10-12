@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Small Steps</title>
+  <title>tasks manager</title>
   <style>
     body{margin:0;background:beige;color:#333;font:16px system-ui,sans-serif}
     main{max-width:600px;margin:auto;padding:48px 24px}
@@ -26,12 +26,12 @@
 <body>
   <main>
     <h1>Small Steps</h1>
-    <p class="intro">Write down a fwe things you want to get done. Small is fine.</p>
+    <p class="intro">Write down a fwe things you want to get done.</p>
     <form id="form">
-      <input id="entry" type="text" maxlength="100" placeholder="Add one small task" aria-label="New task" required>
+      <input id="entry" type="text" maxlength="100"placeholder="Add one small task" aria-label="New task" required>
       <button type="submit">Add task</button>
     </form>
-    <p id="summary" aria-live="polite"></p>
+     <p id="summary" aria-live="polite"></p>
     <ul id="list"></ul>
     <p id="empty">Nothing here yet. Add one small thing.</p>
   </main>
