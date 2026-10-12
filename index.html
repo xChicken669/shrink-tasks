@@ -1,1 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Small Steps</title>
+  <style>
+    body{margin:0;background:beige;color:#333;font:16px system-ui,sans-serif}
+    main{max-width:600px;margin:auto;padding:48px 24px}
+    h1{margin:0;font:600 38px Georgia,serif}
+    p{color:#666;line-height:1.5}
+    form{display:flex;gap:8px}
+    input,button{min-height:44px;border:1px solid #888;border-radius:0;font:inherit}
+    input[type=text]{min-width:0;flex:1;padding:0 10px;background:white}
+    button{padding:0 14px;background:#59664f;color:white;cursor:pointer}
+    #summary{font-size:14px}
+    ul{list-style:none;margin:20px 0;padding:0;border-top:1px solid #ccc}
+    li{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #ccc}
+    input[type=checkbox]{appearance:none;width:18px;height:18px;border:1px solid #777;background:white;border-radius:0;flex:none;margin:0}
+    input[type=checkbox]:checked{background:#59664f}
+    .task{flex:1;overflow-wrap:anywhere}
+    .done .task{color:#777;text-decoration:line-through}
+    .remove{min-height:30px;padding:0 8px;background:transparent;border:0;color:#666;font-size:13px}
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Small Steps</h1>
+    <p class="intro">Write down a fwe things you want to get done. Small is fine.</p>
+    <form id="form">
+      <input id="entry" type="text" maxlength="100" placeholder="Add one small task" aria-label="New task" required>
+      <button type="submit">Add task</button>
+    </form>
+    <p id="summary" aria-live="polite"></p>
+    <ul id="list"></ul>
+    <p id="empty">Nothing here yet. Add one small thing.</p>
+  </main>
+  <script>
+    const form=document.querySelector("#form"),entry=document.querySelector("#entry"),list=document.querySelector("#list"),summary=document.querySelector("#summary"),empty=document.querySelector("#empty");
+    let tasks=[];
+    try{tasks=JSON.parse(localStorage.smallSteps||"[]")||[]}catch{}
+    function save(){try{localStorage.smallSteps=JSON.stringify(tasks)}catch{}}
+    function render(){list.replaceChildren();let open=0,done=0;tasks.forEach((task,index)=>{if(task.done)done++;else open++;let row=document.createElement("li"),check=document.createElement("input"),label=document.createElement("span"),remove=document.createElement("button");row.className=task.done?"done":"";check.type="checkbox";check.checked=task.done;check.setAttribute("aria-label","Mark task done");check.onchange=()=>{task.done=check.checked;save();render()};label.className="task";label.textContent=task.text;remove.type="button";remove.className="remove";remove.textContent="Remove";remove.onclick=()=>{tasks.splice(index,1);save();render()};row.append(check,label,remove);list.append(row)});summary.textContent=open+" open tasks and "+done+" done";empty.hidden=tasks.length>0}
+    form.onsubmit=event=>{event.preventDefault();let text=entry.value.trim();if(!text)return;tasks.push({text,done:false});entry.value="";save();render();entry.focus()};
+    render();
+  </script>
+</body>
+</html>
 
